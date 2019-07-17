@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header :: common-header"/>
+
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width textarea */
+.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  resize: none;
+  min-height: 200px;
+}
+
+/* When the textarea gets focus, do something */
+.form-container textarea:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+</style>
+
+
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+
+<body roleId="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<head th:replace="common/header :: navbar"/>
+<div class="container">
+    <div class="row main">
+        <div class="col-md-6">
+            <h2 class="title"><span th:text="${userContact.name}">...</span> Details</h2>
+            <hr/>
+            <form method="post" th:action="@{/account/profile}">
+                <input type="hidden" name="id" th:value="${userContact.id}"/>
+
+                <div class="form-group">
+                    <label for="firstName">Email id</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" th:value="${userContact.emailContact}" id="firstName"
+                                   name="firstName" roleId="firstname" placeholder="Enter your first name"
+                                   required="required"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <button type="submit" class="btn btn-primary btn-block">Change Settings
+                    </button>
+                </div>
+
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h1 class="title">Contact Information</h1>
+                    <hr/>
+                </div>
+                <table class="responstable">
+                    <tr>
+                        <th>Email Id</th>
+                        <th>Phone No</th>
+                    </tr>
+
+                    <tr>
+                        <td data-th-text="${userContact.emailContact}">...</td>
+                        <td data-th-text="${userContact.phoneContact}">...</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        
+            <div class="panel panel-red">
+               <button class="open-button" onclick="openForm()">
+                	<span><i class="fa fa-comments fa-5x"></i></span>
+                	Click Here to chat
+                </button>
+                    
+                <div class="chat-popup" id="myForm">
+  					<form action="/action_page.php" class="form-container">
+   					 	<h1>Chat</h1>
+						<label for="msg"><b>Message</b></label>
+						<textarea placeholder="Type message.." name="msg" required></textarea>
+
+						<button type="submit" class="btn">Send</button>
+						<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+				 	</form>
+				</div>
+            </div>
+
+    </div>
+</div>
+
+
+<div th:replace="common/header :: body-bottom-scripts"/>
+
+</body>
+</html>
